@@ -1,6 +1,6 @@
 // ========== Imports ==========
 import { describe, expect, expectTypeOf, it } from "vitest";
-import { Door } from "./escaperoom";
+import { Door, Key, Player } from "./escaperoom";
 // ========== Logic ==========
 describe("door",() => {
     it("ne peut pas être franchie", () => {
@@ -9,23 +9,49 @@ describe("door",() => {
             La règle métier est :
             Une porte fermée ne peut pas être franchie.
         */
-        const door = new Door(true);
+        const door = new Door(true, "blue");
         // vérifier si elle est fermée
         const isOpen = door.isOpen();
         expect(isOpen).toBeFalsy();
     });
 
-    it("peut être franchie", () => {
+    it("Une porte ouverte peut être franchie", () => {
         /*
             Ajoutez le comportement permettant de franchir une porte ouverte.
             La règle métier est :
             Une porte ouverte peut être franchie.
         */
-               const door = new Door(false);
+        const door = new Door(false, "blue");
         // vérifier si elle est ouverte
         const isOpen = door.isOpen();
         expect(isOpen).toBeTruthy();
     });
 
-    // it("nomdutest", () => {});
+    it("ouvrir la porte avec une clé", () => {
+        /*
+            Ajoutez la possibilité d'ouvrir une porte nécessitant une clé.
+            
+            Les règles métier sont :
+            - chaque porte peut nécessiter une clé particulière ;
+            - le joueur peut ouvrir la porte s'il possède la clé correspondante ;
+            - le joueur ne peut pas ouvrir la porte s'il ne possède pas la clé correspondante.
+
+            Exemple :
+            - Porte rouge → red-key
+            - Porte bleue → blue-key
+        */
+        // Vérifier si une porte a besoin d'une clé
+        // Si porte fermée, utilisé la clé
+
+        const door = new Door(true, "blue");
+        const key = new Key("blue");
+        const player = new Player("Jane");
+
+        player.addKey(key);
+
+        player.useKey(door,key);
+
+        expect(door.isClosed).toBe(false);
+
+    });
 });
