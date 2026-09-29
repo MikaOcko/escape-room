@@ -52,6 +52,7 @@ describe("door",() => {
         player.useKey(door,key);
 
         expect(door.isClosed).toBe(false);
+        expect(player.keys).toHaveLength(0);
 
     });
 });

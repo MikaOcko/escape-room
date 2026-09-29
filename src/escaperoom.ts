@@ -37,8 +37,12 @@ export class Player{
         this.keys = [];
     }
 
-    public addKey(key:Key){
+    public addKey(key:Key) :void{
         this.keys.push(key);
+    }
+
+    public removeKey() : void{
+        this.keys.pop();
     }
 
     public useKey(door:Door, key:Key): Door{
@@ -46,6 +50,8 @@ export class Player{
         // Si ouverte, pas besoin d'utiliser la clé
         if(door.color === key.color){
             door.isClosed = false;
+            // enlève la clé de l'inventaire
+            this.removeKey();
         }
         
         return door;
