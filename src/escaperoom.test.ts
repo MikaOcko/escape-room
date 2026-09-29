@@ -1,6 +1,6 @@
 // ========== Imports ==========
 import { describe, expect, expectTypeOf, it } from "vitest";
-import { Door, Key, Player } from "./escaperoom";
+import { Door, Item, Key, Player, Room } from "./escaperoom";
 // ========== Logic ==========
 describe("door",() => {
     it("ne peut pas être franchie", () => {
@@ -55,4 +55,23 @@ describe("door",() => {
         expect(player.keys).toHaveLength(0);
 
     });
+});
+
+describe("Player", () => {
+    it("ajouter un objet à son inventaire", () => {
+        const player = new Player("Jane");
+        const item = new Item("radio");
+        const room = new Room();
+
+        room.addItem(item);
+        expect(room.items).toHaveLength(1);
+        expect(player.inventory).toHaveLength(0);
+
+        player.collectItem(item, room);
+        expect(room.items).toHaveLength(0);
+        expect(player.inventory).toHaveLength(1);
+        expect(player.inventory).toContain(item);
+    });
+
+    // it("nomdutest", () => {});
 });

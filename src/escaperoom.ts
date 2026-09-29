@@ -31,10 +31,12 @@ export class Key {
 export class Player{
     public name:string;
     public keys:Key[];
+    public inventory:Item[];
 
     constructor(name:string){
         this.name = name;
         this.keys = [];
+        this.inventory = [];
     }
 
     public addKey(key:Key) :void{
@@ -55,5 +57,30 @@ export class Player{
         }
         
         return door;
+    }
+
+    public collectItem(item:Item, room:Room){
+        this.inventory.push(item);
+        room.items.pop();
+    }
+}
+
+export class Room{
+    public items:Item[];
+
+    constructor(){
+        this.items = [];
+    }
+
+    public addItem(item:Item):void{
+        this.items.push(item);
+    }
+}
+
+export class Item{
+    public name:string;
+
+    constructor(name:string){
+        this.name = name;
     }
 }
