@@ -1,6 +1,6 @@
 // ========== Imports ==========
 import { describe, expect, expectTypeOf, it } from "vitest";
-import { Door, Item, Key, Player, Room } from "./escaperoom";
+import { Door, Enigma, Item, Key, Player, Room } from "./escaperoom";
 // ========== Logic ==========
 describe("door",() => {
     it("ne peut pas être franchie", () => {
@@ -119,6 +119,40 @@ describe("Player", () => {
 
         expect(useItem).toBe(false);
     });
+});
+
+describe("Enigma", () => {
+    it("le joueur a donnée une bonne réponse", () => {
+        const enigma = new Enigma();
+        const player = new Player("Jane");
+
+        player.answer = "Lorem ipsum dolor.";
+        enigma.answer = "Lorem ipsum dolor.";
+
+        const answer = player.giveAnswer(enigma);
+
+        expect(answer).toBe(true);
+    });
+
+    it("le joueur a donnée une mauvaise réponse", () => {
+        const enigma = new Enigma();
+        const player = new Player("Jane");
+
+        player.answer = "Lorem ipsum dolor.";
+        enigma.answer = "Integer tempor euismod.";
+
+        const answer = player.giveAnswer(enigma);
+
+        expect(answer).toBe(false);
+    });
+
+    // it("un joueur peut franchir la porte s'il a résolu l'énigme", () => {
+
+    // });
+
+    // it("un joueur ne peut pas franchir la porte s'il n'a pas résolu l'énigme", () => {
+        
+    // });
 
     // it("nomdutest", () => {});
 });

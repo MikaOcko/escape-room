@@ -2,6 +2,16 @@
 
 // ========== Logic ==========
 export class Door {
+    // public isClosed:boolean;
+    // public color:string;
+    // public enigma:Enigma;
+
+    // public constructor(status:boolean, color:string, enigma:Enigma){
+    //     this.isClosed = status;
+    //     this.color = color;
+    //     this.enigma = enigma;
+    // }
+
     public isClosed:boolean;
     public color:string;
 
@@ -17,7 +27,6 @@ export class Door {
 
         return false;
     }
-
 }
 
 export class Key {
@@ -32,11 +41,13 @@ export class Player{
     public name:string;
     public keys:Key[];
     public inventory:Item[];
+    public answer:string;
 
     constructor(name:string){
         this.name = name;
         this.keys = [];
         this.inventory = [];
+        this.answer = "";
     }
 
     public addKey(key:Key) :void{
@@ -77,6 +88,14 @@ export class Player{
 
         return false;
     }
+
+    public giveAnswer(enigma:Enigma):boolean{
+        if(this.answer === enigma.answer){
+            return true;
+        }
+
+        return false;
+    }
 }
 
 export class Room{
@@ -101,4 +120,13 @@ export class Item{
     constructor(name:string){
         this.name = name;
     }
+}
+
+export class Enigma{
+    public answer:string;
+
+    constructor(){
+        this.answer = "";
+    }
+
 }
