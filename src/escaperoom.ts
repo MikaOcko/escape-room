@@ -69,6 +69,14 @@ export class Player{
         room.items.pop();
         return true;
     }
+
+    public useItem(item:Item):boolean{
+        if(this.inventory.find((i) => i === item)){
+            return true;
+        }
+
+        return false;
+    }
 }
 
 export class Room{

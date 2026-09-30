@@ -88,5 +88,37 @@ describe("Player", () => {
 
     });
 
+    
+    it("Un joueur peut utiliser un objet qu'il possède dans son inventaire", () => {
+        const player = new Player("Jane");
+        const item = new Item("radio");
+        const room = new Room();
+
+        room.addItem(item);
+
+        player.collectItem(item,room);
+
+        expect(player.inventory).toHaveLength(1);
+
+        const useItem = player.useItem(item);
+
+        expect(useItem).toBe(true);
+    });
+
+    it("Un joueur ne peut pas utiliser un objet qu'il ne possède pas dans son inventaire", () => {
+        const player = new Player("Jane");
+        const item = new Item("radio");
+        const room = new Room();
+
+        room.addItem(item);
+
+
+        expect(player.inventory).toHaveLength(0);
+
+        const useItem = player.useItem(item);
+
+        expect(useItem).toBe(false);
+    });
+
     // it("nomdutest", () => {});
 });
