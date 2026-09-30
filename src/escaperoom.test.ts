@@ -165,7 +165,7 @@ describe("Enigma", () => {
     });
 
     it("un joueur ne peut pas franchir la porte s'il n'a pas résolu l'énigme", () => {
-            const enigma = new Enigma();
+        const enigma = new Enigma();
         const player = new Player("Jane");
         const door = new Door(true, "teal", enigma);
 
@@ -180,6 +180,78 @@ describe("Enigma", () => {
 
         expect(openTheDoor).toBe(false);
         expect(door.isClosed).toBe(true);
+    });
+
+    it("Le joueur a donné 2 mauvaises réponses", () => {
+        const enigma = new Enigma();
+        const player = new Player("Jane");
+
+        enigma.answer = "Integer tempor euismod.";
+
+        player.answer = "Lorem ipsum dolor.";
+        const answer1 = player.giveAnswer(enigma);
+        expect(answer1).toBe(false);
+
+        player.answer = "Praesent augue neque.";
+        const answer2 = player.giveAnswer(enigma);
+        expect(answer2).toBe(false);
+
+        player.answer = "Integer tempor euismod.";
+        const answer3 = player.giveAnswer(enigma);
+        expect(answer3).toBe(true);
+
+        expect(enigma.counter).toBeLessThan(3);
+        expect(enigma.counter).toEqual(2);
+        expect(enigma.isResolved).toBe(true);
+    });
+    
+    it("Le joueur a donné 3 mauvaises réponses", () => {
+        const enigma = new Enigma();
+        const player = new Player("Jane");
+
+        enigma.answer = "Integer tempor euismod.";
+
+        player.answer = "Lorem ipsum dolor.";
+        const answer1 = player.giveAnswer(enigma);
+        expect(answer1).toBe(false);
+
+        player.answer = "Praesent augue neque.";
+        const answer2 = player.giveAnswer(enigma);
+        expect(answer2).toBe(false);
+
+        player.answer = "Nullam ut mattis.";
+        const answer3 = player.giveAnswer(enigma);
+        expect(answer3).toBe(false);
+
+        expect(enigma.counter).toBeLessThanOrEqual(3);
+        expect(enigma.isResolved).toBe(false);
+    });
+
+    it("Le joueur ne peut pas donner plus de 3 mauvaises réponses", () => {
+        const enigma = new Enigma();
+        const player = new Player("Jane");
+
+        enigma.answer = "Integer tempor euismod.";
+
+        player.answer = "Lorem ipsum dolor.";
+        const answer1 = player.giveAnswer(enigma);
+        expect(answer1).toBe(false);
+
+        player.answer = "Praesent augue neque.";
+        const answer2 = player.giveAnswer(enigma);
+        expect(answer2).toBe(false);
+
+        player.answer = "Nullam ut mattis.";
+        const answer3 = player.giveAnswer(enigma);
+        expect(answer3).toBe(false);
+
+        player.answer = "Donec euismod luctus.";
+        const answer4 = player.giveAnswer(enigma);
+        expect(answer4).toBe(false);
+
+        expect(enigma.counter).toBeGreaterThanOrEqual(3);
+        expect(enigma.isResolved).toBe(false);
+
     });
 
     // it("nomdutest", () => {});

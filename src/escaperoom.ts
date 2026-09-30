@@ -95,12 +95,29 @@ export class Player{
     }
 
     public giveAnswer(enigma:Enigma):boolean{
-        if(this.answer === enigma.answer){
-            enigma.isResolved = true;
+        if(!enigma.isResolved){
+            if(this.answer != enigma.answer){
+                enigma.counter ++;
+    
+                if(enigma.counter >= 3){
+                    this.bePunished();
+                }
+    
+                return false;
+            }
+    
+            if(this.answer === enigma.answer){
+                enigma.isResolved = true;
+            }
+            
             return true;
+        } else {
+            return false;
         }
+    }
 
-        return false;
+    public bePunished(){
+        console.log("Faites face à votre destin");
     }
 }
 
@@ -131,10 +148,12 @@ export class Item{
 export class Enigma{
     public answer:string;
     public isResolved:boolean;
+    public counter:number;
 
     constructor(){
         this.answer = "";
         this.isResolved = false;
+        this.counter = 0;
     }
 
 }
