@@ -58,7 +58,7 @@ describe("door",() => {
 });
 
 describe("Player", () => {
-    it("ajouter un objet à son inventaire", () => {
+    it("quand un joueur ramasse un objet, il l'ajoute à son inventaire. Plus, l'objet est retiré de la salle.", () => {
         const player = new Player("Jane");
         const item = new Item("radio");
         const room = new Room();
@@ -71,6 +71,21 @@ describe("Player", () => {
         expect(room.items).toHaveLength(0);
         expect(player.inventory).toHaveLength(1);
         expect(player.inventory).toContain(item);
+    });
+
+    it("Un joueur ne peut pas ramassé deux fois le même objet.", () => {
+        const player = new Player("Jane");
+        const item = new Item("radio");
+        const room = new Room();
+
+        room.addItem(item);
+
+        player.collectItem(item, room);
+        const pickUpItemTwice = player.collectItem(item, room);
+        
+        expect(pickUpItemTwice).toBe(false);
+        expect(player.inventory).toHaveLength(1);
+
     });
 
     // it("nomdutest", () => {});

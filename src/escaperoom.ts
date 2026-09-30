@@ -59,9 +59,15 @@ export class Player{
         return door;
     }
 
-    public collectItem(item:Item, room:Room){
+    public collectItem(item:Item, room:Room):boolean{
+        // si item pas présent dans l'inventaire du joueur ET présent dans les objets de la pièce
+        if(this.inventory.find((i) => i === item) && !room.items.find((i) => i === item)){
+            return false;
+        }
+
         this.inventory.push(item);
         room.items.pop();
+        return true;
     }
 }
 
@@ -74,6 +80,10 @@ export class Room{
 
     public addItem(item:Item):void{
         this.items.push(item);
+    }
+
+    public getItems():Item[]{
+        return this.items;
     }
 }
 
