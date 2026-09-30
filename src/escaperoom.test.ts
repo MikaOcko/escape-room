@@ -261,7 +261,7 @@ describe("Alarm", () => {
     it("L'alarme est activée", () => {
         const alarm = new Alarm();
 
-        alarm.turnOffOn();
+        alarm.isActivatedBySomeoneOrSomething();
 
         expect(alarm.isActivated).toBe(true);
     });
@@ -271,10 +271,32 @@ describe("Alarm", () => {
     it("L'alarme est active jusqu'à ce qu'elle soit désactivée", () => {
         const alarm = new Alarm();
 
-        alarm.turnOffOn();
-        alarm.turnOffOn();
-
+        alarm.isActivatedBySomeoneOrSomething();
+        alarm.isDesactivatedbySomeoneOrSomething();
+        
         expect(alarm.isActivated).toBe(false);
     });
+
+    // it("Une porte reliée à l'alarme ne peut pas être ouverte lorsque l'alarme est active", () => {
+    //     const alarm = new Alarm();
+    //     const door = new Door(false, "yellow", );
+
+    //     alarm.turnOffOn();
+    //     expect(alarm.isActivated).toBe(true);
+
+    //     const openThedoor = door.openTheDoor();
+    //     expect(openThedoor).toBe(false);
+    // });
+
+    // it("Une porte non reliée à l'alarme peut être ouverte lorsque l'alarme est active", () => {
+    //     const alarm = new Alarm();
+    //     const door = new Door(false, "yellow");
+
+    //     alarm.turnOffOn();
+    //     expect(alarm.isActivated).toBe(true);
+
+    //     const openTheDoor = door.openTheDoor();
+    //     expect(openTheDoor).toBe(true);
+    // });
     // it("nomdutest", () => {});
 });

@@ -12,22 +12,13 @@ export class Door {
         this.enigma = enigma;
     }
 
-    // public isClosed:boolean;
-    // public color:string;
-
-    // public constructor(status:boolean, color:string){
-    //     this.isClosed = status;
-    //     this.color = color;
-    // }
-
     public openTheDoor():boolean{
-        if(this.isClosed === false){
-            return true;
-        }
+        if(!this.isClosed || this.enigma?.isResolved){
+            if(this.enigma?.isResolved){
+                this.isClosed = false;
+            }
 
-        if(this.enigma?.isResolved === true){
-            this.isClosed = false;
-            return true;
+            return true
         }
         
         return false;
@@ -165,7 +156,11 @@ export class Alarm{
         this.isActivated = false;
     }
 
-    public turnOffOn():boolean{
+    public isActivatedBySomeoneOrSomething():boolean{
+        return this.isActivated = true;
+    }
+
+    public isDesactivatedbySomeoneOrSomething():boolean{
         if(this.isActivated === false){
             return this.isActivated = true;
         }
