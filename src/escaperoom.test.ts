@@ -1,6 +1,6 @@
 // ========== Imports ==========
 import { describe, expect, expectTypeOf, it } from "vitest";
-import { Door, Enigma, Item, Key, Player, Room } from "./escaperoom";
+import { Alarm, Door, Enigma, Item, Key, Player, Room } from "./escaperoom";
 // ========== Logic ==========
 describe("door",() => {
     it("ne peut pas être franchie", () => {
@@ -254,5 +254,27 @@ describe("Enigma", () => {
 
     });
 
+
+});
+
+describe("Alarm", () => {
+    it("L'alarme est activée", () => {
+        const alarm = new Alarm();
+
+        alarm.turnOffOn();
+
+        expect(alarm.isActivated).toBe(true);
+    });
+
+
+
+    it("L'alarme est active jusqu'à ce qu'elle soit désactivée", () => {
+        const alarm = new Alarm();
+
+        alarm.turnOffOn();
+        alarm.turnOffOn();
+
+        expect(alarm.isActivated).toBe(false);
+    });
     // it("nomdutest", () => {});
 });

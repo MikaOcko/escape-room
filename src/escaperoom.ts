@@ -109,7 +109,7 @@ export class Player{
             if(this.answer === enigma.answer){
                 enigma.isResolved = true;
             }
-            
+
             return true;
         } else {
             return false;
@@ -156,4 +156,20 @@ export class Enigma{
         this.counter = 0;
     }
 
+}
+
+export class Alarm{
+    public isActivated:boolean;
+
+    constructor(){
+        this.isActivated = false;
+    }
+
+    public turnOffOn():boolean{
+        if(this.isActivated === false){
+            return this.isActivated = true;
+        }
+
+        return this.isActivated = false;
+    }
 }
