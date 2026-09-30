@@ -2,29 +2,34 @@
 
 // ========== Logic ==========
 export class Door {
-    // public isClosed:boolean;
-    // public color:string;
-    // public enigma:Enigma;
-
-    // public constructor(status:boolean, color:string, enigma:Enigma){
-    //     this.isClosed = status;
-    //     this.color = color;
-    //     this.enigma = enigma;
-    // }
-
     public isClosed:boolean;
     public color:string;
+    public enigma?:Enigma;
 
-    public constructor(status:boolean, color:string){
+    public constructor(status:boolean, color:string, enigma?:Enigma){
         this.isClosed = status;
         this.color = color;
+        this.enigma = enigma;
     }
 
-    public isOpen():boolean{
+    // public isClosed:boolean;
+    // public color:string;
+
+    // public constructor(status:boolean, color:string){
+    //     this.isClosed = status;
+    //     this.color = color;
+    // }
+
+    public openTheDoor():boolean{
         if(this.isClosed === false){
             return true;
         }
 
+        if(this.enigma?.isResolved === true){
+            this.isClosed = false;
+            return true;
+        }
+        
         return false;
     }
 }
@@ -91,6 +96,7 @@ export class Player{
 
     public giveAnswer(enigma:Enigma):boolean{
         if(this.answer === enigma.answer){
+            enigma.isResolved = true;
             return true;
         }
 
@@ -124,9 +130,11 @@ export class Item{
 
 export class Enigma{
     public answer:string;
+    public isResolved:boolean;
 
     constructor(){
         this.answer = "";
+        this.isResolved = false;
     }
 
 }

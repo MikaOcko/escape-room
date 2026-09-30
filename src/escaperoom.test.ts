@@ -11,8 +11,8 @@ describe("door",() => {
         */
         const door = new Door(true, "blue");
         // vérifier si elle est fermée
-        const isOpen = door.isOpen();
-        expect(isOpen).toBeFalsy();
+        const openTheDoor = door.openTheDoor();
+        expect(openTheDoor).toBeFalsy();
     });
 
     it("Une porte ouverte peut être franchie", () => {
@@ -23,8 +23,8 @@ describe("door",() => {
         */
         const door = new Door(false, "blue");
         // vérifier si elle est ouverte
-        const isOpen = door.isOpen();
-        expect(isOpen).toBeTruthy();
+        const openTheDoor = door.openTheDoor();
+        expect(openTheDoor).toBeTruthy();
     });
 
     it("ouvrir la porte avec une clé", () => {
@@ -146,13 +146,41 @@ describe("Enigma", () => {
         expect(answer).toBe(false);
     });
 
-    // it("un joueur peut franchir la porte s'il a résolu l'énigme", () => {
+    it("un joueur peut franchir la porte s'il a résolu l'énigme", () => {
+        const enigma = new Enigma();
+        const player = new Player("Jane");
+        const door = new Door(true, "teal", enigma);
 
-    // });
+        player.answer = "Lorem ipsum dolor.";
+        enigma.answer = "Lorem ipsum dolor.";
 
-    // it("un joueur ne peut pas franchir la porte s'il n'a pas résolu l'énigme", () => {
-        
-    // });
+        const answer = player.giveAnswer(enigma);
+        const openTheDoor = door.openTheDoor();
+
+        expect(answer).toBe(true);
+        expect(enigma.isResolved).toBe(true);
+
+        expect(openTheDoor).toBe(true);
+        expect(door.isClosed).toBe(false);
+    });
+
+    it("un joueur ne peut pas franchir la porte s'il n'a pas résolu l'énigme", () => {
+            const enigma = new Enigma();
+        const player = new Player("Jane");
+        const door = new Door(true, "teal", enigma);
+
+        player.answer = "Lorem ipsum dolor.";
+        enigma.answer = "Integer tempor euismod.";
+
+        const answer = player.giveAnswer(enigma);
+        const openTheDoor = door.openTheDoor();
+
+        expect(answer).toBe(false);
+        expect(enigma.isResolved).toBe(false);
+
+        expect(openTheDoor).toBe(false);
+        expect(door.isClosed).toBe(true);
+    });
 
     // it("nomdutest", () => {});
 });
