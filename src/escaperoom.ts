@@ -5,15 +5,17 @@ export class Door {
     public isClosed:boolean;
     public color:string;
     public enigma?:Enigma;
+    public linkedToAlarm:boolean;
 
-    public constructor(status:boolean, color:string, enigma?:Enigma){
-        this.isClosed = status;
+    public constructor(isClosed:boolean, linkedToAlarm:boolean, color:string, enigma?:Enigma){
+        this.isClosed = isClosed;
+        this.linkedToAlarm = linkedToAlarm;
         this.color = color;
         this.enigma = enigma;
     }
 
-    public openTheDoor():boolean{
-        if(!this.isClosed || this.enigma?.isResolved){
+    public openTheDoor(alarm?:Alarm):boolean{
+        if(!this.isClosed){
             if(this.enigma?.isResolved){
                 this.isClosed = false;
             }
@@ -21,6 +23,19 @@ export class Door {
             return true
         }
         
+        if(this.enigma?.isResolved){
+            this.isClosed = false;
+            return true
+        }
+
+        if(alarm?.isActivated){
+            if(this.linkedToAlarm){
+                return false;
+            }
+
+            return true;
+        }
+
         return false;
     }
 }
