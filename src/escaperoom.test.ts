@@ -4,11 +4,6 @@ import { Alarm, Door, Enigma, Item, Key, Player, Room } from "./escaperoom";
 // ========== Logic ==========
 describe("door",() => {
     it("ne peut pas être franchie", () => {
-        /*
-            Développez le comportement permettant de déterminer si une porte peut être franchie.
-            La règle métier est :
-            Une porte fermée ne peut pas être franchie.
-        */
         const door = new Door(true, false, "blue");
         // vérifier si elle est fermée
         const openTheDoor = door.openTheDoor();
@@ -33,9 +28,9 @@ describe("door",() => {
         const player = new Player("Jane");
 
         player.addKey(key);
-        player.useKey(door,key);
+        const useKey = player.useKey(door,key);
 
-        expect(player.useKey(door, key)).toBe(true);
+        expect(useKey).toBe(true);
         expect(door.isClosed).toBe(false);
         expect(player.keys).toHaveLength(0);
     });
@@ -45,9 +40,9 @@ describe("door",() => {
         const key = new Key("blue");
         const player = new Player("Jane");
 
-        player.useKey(door,key);
+        const useKey = player.useKey(door,key);
         
-        expect(player.useKey(door, key)).toBe(false);
+        expect(useKey).toBe(false);
         expect(door.isClosed).toBe(true);
         expect(player.keys).toHaveLength(0);
 
