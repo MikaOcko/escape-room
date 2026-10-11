@@ -152,6 +152,7 @@ export class Player{
         } else {
             return false;
         }
+        
     }
 
     public bePunished(){
