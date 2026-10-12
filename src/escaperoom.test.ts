@@ -4,11 +4,6 @@ import { Alarm, Door, Enigma, Item, Key, Player, Room } from "./escaperoom";
 // ========== Logic ==========
 describe("door",() => {
     it("ne peut pas être franchie", () => {
-        /*
-            Développez le comportement permettant de déterminer si une porte peut être franchie.
-            La règle métier est :
-            Une porte fermée ne peut pas être franchie.
-        */
         const door = new Door(true, false, "blue");
         // vérifier si elle est fermée
         const openTheDoor = door.openTheDoor();
@@ -16,42 +11,34 @@ describe("door",() => {
     });
 
     it("Une porte ouverte peut être franchie", () => {
-        /*
-            Ajoutez le comportement permettant de franchir une porte ouverte.
-            La règle métier est :
-            Une porte ouverte peut être franchie.
-        */
         const door = new Door(false, false, "blue");
         // vérifier si elle est ouverte
         const openTheDoor = door.openTheDoor();
         expect(openTheDoor).toBeTruthy();
     });
 
-    it("ouvrir la porte avec une clé", () => {
-        /*
-            Ajoutez la possibilité d'ouvrir une porte nécessitant une clé.
-            
-            Les règles métier sont :
-            - chaque porte peut nécessiter une clé particulière ;
-            - le joueur peut ouvrir la porte s'il possède la clé correspondante ;
-            - le joueur ne peut pas ouvrir la porte s'il ne possède pas la clé correspondante.
-
-            Exemple :
-            - Porte rouge → red-key
-            - Porte bleue → blue-key
-        */
-        // Vérifier si une porte a besoin d'une clé
-        // Si porte fermée, utilisé la clé
-
+    it("le joueur peut ouvrir la porte avec une clé", () => {
         const door = new Door(true, false, "blue");
         const key = new Key("blue");
         const player = new Player("Jane");
 
         player.addKey(key);
+        const useKey = player.useKey(door,key);
 
-        player.useKey(door,key);
-
+        expect(useKey).toBe(true);
         expect(door.isClosed).toBe(false);
+        expect(player.keys).toHaveLength(0);
+    });
+
+    it("Un joueur ne peut pas ouvrir une porte avec une clé qu'il ne possède pas", () => {
+        const door = new Door(true, false, "blue");
+        const key = new Key("blue");
+        const player = new Player("Jane");
+
+        const useKey = player.useKey(door,key);
+        
+        expect(useKey).toBe(false);
+        expect(door.isClosed).toBe(true);
         expect(player.keys).toHaveLength(0);
 
     });
@@ -111,7 +98,6 @@ describe("Player", () => {
         const room = new Room();
 
         room.addItem(item);
-
 
         expect(player.inventory).toHaveLength(0);
 
@@ -275,8 +261,6 @@ describe("Alarm", () => {
         expect(alarm.isActivated).toBe(true);
     });
 
-
-
     it("L'alarme active peut être désactivée", () => {
         const alarm = new Alarm();
 
@@ -286,27 +270,52 @@ describe("Alarm", () => {
         expect(alarm.isActivated).toBe(false);
     });
 
-    it("Une porte reliée à l'alarme ne peut pas être ouverte lorsque l'alarme est active", () => {
+    it("Une porte reliée à l'alarme ne peut pas être franchie lorsque l'alarme est active", () => {
         const alarm = new Alarm();
-        const door = new Door(false, true, "yellow", );
+        const linkedDoor = new Door(false, true, "yellow", );
 
         alarm.isActivatedBySomeoneOrSomething();
-        expect(alarm.isActivated).toBe(true);
+        
+        const canPass = linkedDoor.openTheDoor(alarm);
 
-        const openThedoor = door.openTheDoor();
-        expect(openThedoor).toBe(false);
+        expect(alarm.isActivated).toBe(true);
+        expect(canPass).toBe(false);
     });
 
-    it("Une porte non reliée à l'alarme peut être ouverte lorsque l'alarme est active", () => {
+    it("Une porte non reliée à l'alarme peut être franchie lorsque l'alarme est active", () => {
         const alarm = new Alarm();
-        const door = new Door(false, true, "yellow");
+        const unlinkedDoor = new Door(false, false, "yellow");
 
         alarm.isActivatedBySomeoneOrSomething();
-        expect(alarm.isActivated).toBe(true);
+        
+        const canPass = unlinkedDoor.openTheDoor(alarm);
 
-        const openTheDoor = door.openTheDoor();
-        expect(openTheDoor).toBe(true);
+        expect(alarm.isActivated).toBe(true);
+        expect(canPass).toBe(true);
     });
 
+    it("Une porte reliée à l'alarme peut être franchie lorsque l'alarme est désactivée.", () => {
+        const inactiveAlarm = new Alarm();
+        const linkedDoor = new Door(false, true, "yellow");
+
+        
+        const canPass = linkedDoor.openTheDoor(inactiveAlarm);
+
+        expect(inactiveAlarm.isActivated).toBe(false);
+        expect(canPass).toBe(true);
+    });
+
+    it("Une porte fermée non liée à l'alarme ne peut être franchie, même si l'alarme est active", () => {
+        const alarm = new Alarm();
+        const closedUnlinkedDoor = new Door(true, false, "yellow");
+
+        alarm.isActivatedBySomeoneOrSomething();
+        
+        const canPass = closedUnlinkedDoor.openTheDoor(alarm);
+
+        expect(alarm.isActivated).toBe(true);
+        expect(closedUnlinkedDoor.isClosed).toBe(true);
+        expect(canPass).toBe(false);
+    });
     // it("nomdutest", () => {});
 });

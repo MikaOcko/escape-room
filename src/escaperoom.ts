@@ -14,25 +14,45 @@ export class Door {
         this.enigma = enigma;
     }
 
-    public openTheDoor(alarm?:Alarm):boolean{
-        if(!this.isClosed){
-            if(this.enigma?.isResolved){
-                this.isClosed = false;
-            }
+    // public openTheDoor(alarm?:Alarm):boolean{
+    //     if(!this.isClosed){
+    //         if(this.enigma?.isResolved){
+    //             this.isClosed = false;
+    //         }
 
-            return true
-        }
+    //         return true
+    //     }
         
+    //     if(this.enigma?.isResolved){
+    //         this.isClosed = false;
+    //         return true
+    //     }
+
+    //     if(alarm?.isActivated){
+    //         if(this.linkedToAlarm){
+    //             return false;
+    //         }
+
+    //         return true;
+    //     }
+
+    //     return false;
+    // }
+
+    public openTheDoor(alarm?:Alarm):boolean{
+        // Alarme activée et porte reliée à l'alarme : pas franchissable
+        if(alarm?.isActivated && this.linkedToAlarm){
+            return false;
+        }
+
+        // Porte ouverte : franchissable
+        if(!this.isClosed){
+            return true;
+        }
+
+        // Porte avec énigme : si éngime résolue > porte ouverte > franchissable
         if(this.enigma?.isResolved){
             this.isClosed = false;
-            return true
-        }
-
-        if(alarm?.isActivated){
-            if(this.linkedToAlarm){
-                return false;
-            }
-
             return true;
         }
 
@@ -69,26 +89,38 @@ export class Player{
         this.keys.pop();
     }
 
-    public useKey(door:Door, key:Key): Door{
-        // vérifier si la porte est ouverte
-        // Si ouverte, pas besoin d'utiliser la clé
-        if(door.color === key.color){
-            door.isClosed = false;
-            // enlève la clé de l'inventaire
-            this.removeKey();
+    public useKey(door:Door, key:Key): boolean{
+        // // vérifier si la porte est ouverte
+        // // Si ouverte, pas besoin d'utiliser la clé
+
+        // Check si le joueur possède la clé
+        if (!this.keys.includes(key)) {
+            return false;
         }
-        
-        return door;
+
+        if (door.color !== key.color || !door.isClosed) {
+            return false;
+        }
+
+        door.isClosed = false;
+        // this.keys = this.keys.filter((ownedKey) => ownedKey !== key);
+        this.removeKey();
+        return true;
     }
 
     public collectItem(item:Item, room:Room):boolean{
         // si item pas présent dans l'inventaire du joueur ET présent dans les objets de la pièce
-        if(this.inventory.find((i) => i === item) && !room.items.find((i) => i === item)){
+        // const alreadyOwned = this.inventory.find((i) => i === item);
+        const alreadyOwned = this.inventory.includes(item);
+        // const intoRoom = room.items.find((i) => i === item);
+        const intoRoom = room.items.includes(item);
+
+        if(alreadyOwned || !intoRoom){
             return false;
         }
 
         this.inventory.push(item);
-        room.items.pop();
+        room.items = room.items.filter((roomItem) => roomItem !== item);
         return true;
     }
 
@@ -120,6 +152,7 @@ export class Player{
         } else {
             return false;
         }
+        
     }
 
     public bePunished(){
@@ -172,14 +205,12 @@ export class Alarm{
     }
 
     public isActivatedBySomeoneOrSomething():boolean{
-        return this.isActivated = true;
+        this.isActivated = true;
+        return this.isActivated;
     }
 
     public isDesactivatedbySomeoneOrSomething():boolean{
-        if(this.isActivated === false){
-            return this.isActivated = true;
-        }
-
-        return this.isActivated = false;
+        this.isActivated = false;
+        return this.isActivated;
     }
 }
